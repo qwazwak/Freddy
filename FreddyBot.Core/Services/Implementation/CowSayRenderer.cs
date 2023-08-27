@@ -1,27 +1,32 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Cowsay.Abstractions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace FreddyBot.Core.Services.Implementation;
+
 public class CowSayRenderer
 {
     private readonly ILogger<CowSayRenderer> logger;
     private readonly ICattleFarmer cattleFarmer;
-    private ICow? defaultCow;
+    private readonly Task<ICow> defaultCowTask;
+
     private readonly IMemoryCache cowCache;
     public CowSayRenderer(ILogger<CowSayRenderer> logger, ICattleFarmer cattleFarmer, IMemoryCache cowCache)
     {
         this.logger = logger;
         this.cattleFarmer = cattleFarmer;
         this.cowCache = cowCache;
+        //cowCache.CreateEntry("default").Value = cattleFarmer.RearCowAsync("default");
+        defaultCowTask = cattleFarmer.RearCowAsync("default");
     }
 
     private ValueTask<ICow> GetCow(string? cow)
     {
         if (cow == null)
-            return defaultCow != null ? new(defaultCow) : new(GetDefaultCow());
+            return defaultCowTask.IsCompleted ? new(defaultCowTask.Result) : new(defaultCowTask);
 
         return new(cowCache.GetOrCreate(cow, (entry) =>
         {
@@ -30,21 +35,11 @@ public class CowSayRenderer
         })!);
     }
 
-    private async Task<ICow> GetDefaultCow()
-    {
-        ICow newCow = await cattleFarmer.RearCowAsync("default");
-        logger.LogTrace("Loaded default cow");
-        return Interlocked.CompareExchange(ref defaultCow, newCow, null)!;
-    }
-
     public ValueTask<string> Render(string cow, string phrase, string? eyes, string? cowTongue, int? maxCols, bool? isThought)
     {
         ValueTask<ICow> cowVT = GetCow(cow);
-        if (cowVT.IsCompleted)
-            return new(PostRender(cowVT.Result, phrase, eyes, cowTongue, maxCols, isThought));
 
-        return new(cowVT.AsTask().ContinueWith(c => PostRender(c.Result, phrase, eyes, cowTongue, maxCols, isThought)));
+        return cowVT.IsCompleted ? new(finalRender(cowVT.Result)) : new(cowVT.AsTask().ContinueWith(c => finalRender(c.Result)));
+        string finalRender(ICow cow) => cow.Say(phrase, eyes ?? "oo", cowTongue ?? "  ", maxCols ?? 40, isThought ?? false);
     }
-
-    private string PostRender(ICow cow, string phrase, string? eyes, string? cowTongue, int? maxCols, bool? isThought) => cow.Say(phrase, eyes ?? "oo", cowTongue ?? "  ", maxCols ?? 40, isThought ?? false);
 }

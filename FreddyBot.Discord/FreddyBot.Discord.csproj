@@ -9,8 +9,10 @@
   <ItemGroup>
     <PackageReference Include="DSharpPlus" Version="4.3.0" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.3.0" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FreddyBot.Core\FreddyBot.Core.csproj" />

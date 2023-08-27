@@ -1,31 +1,5 @@
-const md5 = require("md5")
-
-const SwearJar = require("./SwearJar");
-
 class BotCommands
 {
-	static responses = [
-		"As I see it, yes.",
-		"Ask again later.",
-		"Better not tell you now.",
-		"Cannot predict now.",
-		"Concentrate and ask again.",
-		"Don’t count on it.",
-		"It is certain.",
-		"It is decidedly so.",
-		"Most likely.",
-		"My reply is no.",
-		"My sources say no.",
-		"Outlook not so good.",
-		"Outlook good.",
-		"Reply hazy, try again.",
-		"Signs point to yes.",
-		"Very doubtful.",
-		"Without a doubt.",
-		"Yes.",
-		"Yes – definitely.",
-		"You may rely on it."];
-	
 	static async okBoomer(interaction)
 	{
 		var msgID = interaction.options.get("messageid", true).value;
@@ -88,11 +62,6 @@ class BotCommands
 		var resNum = Math.floor(val * this.responses.length);
 		var res = this.responses[resNum];
 		interaction.reply("Query: " + msg + "\n\nReply: " + res);
-	}
-
-	static swearJar(interaction)
-	{
-		interaction.reply("There is $" + (SwearJar.getValue() / 100).toFixed(2) + " in the swear jar.");
 	}
 };
 
