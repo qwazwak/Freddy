@@ -1,9 +1,0 @@
-{
-	"name": "tntech-csc-fun-discord-bot",
-	"dependencies": {
-		"discord.js": "^14.7.0",
-		"string-similarity": "^4.0.4",
-		"md5": "^2.3.0",
-		"bad-words": "^3.0.4"
-	}
-}
