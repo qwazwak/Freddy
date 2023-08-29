@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if fileSwear
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -26,7 +27,8 @@ public class FileSwearJar : ISwearJar
         public async Task WriteToFileAsync() => await File.WriteAllTextAsync(FileName, ToJson());
         public void WriteToFile() => File.WriteAllText(FileName, ToJson());
     }
-    private readonly ReaderWriterLockSlim readerWriterLock = new();
+
+    private readonly SemaphoreSlim slimLock = new(1);
     public FileSwearJar()
     {
         if (!File.Exists(FileName))
@@ -42,19 +44,19 @@ public class FileSwearJar : ISwearJar
 
     private async Task<FileObject> GetFile()
     {
-        readerWriterLock.EnterReadLock();
+        await slimLock.WaitAsync();
         try
         {
             return await FileObject.ReadAsync();
         }
         finally
         {
-            readerWriterLock.ExitReadLock();
+            slimLock.Release();
         }
     }
     private async Task ReadWrite(Action<FileObject> action)
     {
-        readerWriterLock.EnterWriteLock();
+        await slimLock.WaitAsync();
         try
         {
             FileObject file = await FileObject.ReadAsync();
@@ -63,7 +65,8 @@ public class FileSwearJar : ISwearJar
         }
         finally
         {
-            readerWriterLock.ExitWriteLock();
+            slimLock.Release();
         }
     }
 }
+#endif

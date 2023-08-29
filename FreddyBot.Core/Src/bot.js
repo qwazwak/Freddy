@@ -40,9 +40,5 @@ const commands = [
 				required: true
 			}
 		]
-	},
-	{
-		name: "sj",
-		description: "Check the swear jar balance"
 	}
 ]

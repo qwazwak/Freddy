@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if false
+using System.Collections.Generic;
 using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +11,10 @@ public class Configuration : IConfiguration, IConfigurationRoot
 {
     private static readonly Lazy<Configuration> autoInstance = new(() =>
     {
+        string basePath = Directory.GetCurrentDirectory();
         IConfigurationBuilder builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
         return new(builder.Build());
     });
@@ -31,3 +33,4 @@ public class Configuration : IConfiguration, IConfigurationRoot
     public IConfigurationSection GetSection(string key) => root.GetSection(key);
     public void Reload() => root.Reload();
 }
+#endif

@@ -1,11 +1,7 @@
-﻿#if DBSwear
-using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace FreddyBot.Core.Services.Implementation;
-
 public class DbSwearJar : ISwearJar
 {
     private readonly ILogger<DbSwearJar> logger;
@@ -17,11 +13,11 @@ public class DbSwearJar : ISwearJar
         this.db = db;
     }
 
-    public async Task<decimal> GetSwearCount() => (await Jar).SwearCount;
+    public async Task<decimal> GetSwearCount(ulong guildID) => (await GetJar(guildID)).SwearCount;
 
-    public async Task SetSingleSwearValue(decimal value)
+    public async Task SetSingleSwearValue(ulong guildID, decimal value)
     {
-        SwearJar jar = await Jar;
+        SwearJar jar = await GetJar(guildID);
         if (jar.ValueOfSingleSwear != value)
         {
             logger.LogInformation("Replacing swear value of {old} with {new}", jar.ValueOfSingleSwear, value);
@@ -30,32 +26,26 @@ public class DbSwearJar : ISwearJar
         }
     }
 
-    public async Task AddSwear()
-    {
-        SwearJar jar = await Jar;
-        jar.SwearCount += 1;
-        await db.SaveChangesAsync();
-    }
-
-    public async Task<decimal> GetSingleSwearValue() => (await Jar).ValueOfSingleSwear;
-    public async Task<decimal> GetCurrentValue() => (await Jar).CurrentJarValue;
-
-    private Task<SwearJar> Jar => ReadJar();
-    private async Task<SwearJar> ReadJar()
+    public async Task AddSwear(ulong guildID)
     {
         try
         {
 
-            var result = await db.SwearJars.SingleAsync();
-            return result;
+            SwearJar jar = await GetJar(guildID);
+            jar.SwearCount += 1;
+            await db.SaveChangesAsync();
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
-            SwearJar newJar = new();
-            db.SwearJars.Add(newJar);
-            return newJar;
-            Console.WriteLine(ex.Message);
+            logger.LogWarning(ex, "broke");
         }
     }
+
+    public async Task<decimal> GetSingleSwearValue(ulong guildID) => (await GetJar(guildID)).ValueOfSingleSwear;
+    public async Task<decimal> GetCurrentValue(ulong guildID) => (await GetJar(guildID)).CurrentJarValue;
+
+    private async Task<SwearJar> GetJar(ulong guildID)
+    {
+        return await db.GetOrCreateJar(guildID);
+    }
 }
-#endif

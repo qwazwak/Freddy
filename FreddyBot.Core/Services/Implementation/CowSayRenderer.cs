@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FreddyBot.Core.Services.Implementation;
 
-public class CowSayRenderer
+public class CowSayRenderer : ICowSayRenderer
 {
     private readonly ILogger<CowSayRenderer> logger;
     private readonly ICattleFarmer cattleFarmer;
