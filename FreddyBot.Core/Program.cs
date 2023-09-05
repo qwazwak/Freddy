@@ -56,7 +56,7 @@ public class Program
 
             return new()
             {
-                Token = "ODgyOTc5MjkwNDExNTczMjc4.G-dcEL.APxwHnXKeIvGLINlWqKUcal-ec4vUQNFd3ybDg" ?? options.DiscordToken ?? throw new ArgumentException("Error! Discord token was not found!"),
+                Token = options.DiscordToken,
 
                 // We're asking for unprivileged intents, which means we won't receive any member or presence updates.
                 // Privileged intents must be enabled in the Discord Developer Portal.
