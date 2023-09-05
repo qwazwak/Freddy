@@ -9,9 +9,7 @@ using DSharpPlus.EventsBinderExtension.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DSharpPlus.EventsBinderExtension;
-//
-// Summary:
-//     Defines various extensions specific to CommandsNext.
+
 public static class ExtensionMethods
 {
     //
@@ -91,10 +89,9 @@ public static class ExtensionMethods
     {
         Dictionary<int, EventsNextExtension> modules = new(client.ShardClients.Count);
         await client.InitializeShardsAsync();
-        foreach (DiscordClient item in client.ShardClients.Values)
-        {
-            modules[item.ShardId] = item.GetExtension<EventsNextExtension>() ?? item.UseEventsNext(cfg);
-        }
+
+        foreach (DiscordClient shardClient in client.ShardClients.Values)
+            modules[shardClient.ShardId] = shardClient.GetExtension<EventsNextExtension>() ?? shardClient.UseEventsNext(cfg);
 
         return new ReadOnlyDictionary<int, EventsNextExtension>(modules);
     }
@@ -125,10 +122,9 @@ public static class ExtensionMethods
     {
         await client.InitializeShardsAsync();
         Dictionary<int, EventsNextExtension> dictionary = new();
-        foreach (DiscordClient item in client.ShardClients.Select<KeyValuePair<int, DiscordClient>, DiscordClient>((KeyValuePair<int, DiscordClient> xkvp) => xkvp.Value))
-        {
-            dictionary.Add(item.ShardId, item.GetExtension<EventsNextExtension>());
-        }
+        
+        foreach (DiscordClient clientShart in client.ShardClients.Select<KeyValuePair<int, DiscordClient>, DiscordClient>((KeyValuePair<int, DiscordClient> xkvp) => xkvp.Value))
+            dictionary.Add(clientShart.ShardId, clientShart.GetExtension<EventsNextExtension>());
 
         return new ReadOnlyDictionary<int, EventsNextExtension>(dictionary);
     }

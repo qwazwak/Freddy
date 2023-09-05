@@ -119,7 +119,6 @@ internal static partial class EventsNextUtilities
             return false;
         }
 
-
         if (handler.IsNested)
         {
             reason = $"Type {handler.Name} is nested, which is not allowed";
