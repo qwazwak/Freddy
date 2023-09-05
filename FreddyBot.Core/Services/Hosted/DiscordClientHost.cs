@@ -10,6 +10,7 @@ using FreddyBot.Core.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using QLib.Extensions;
 
 namespace FreddyBot.Core.Services.Hosted;
 
@@ -18,22 +19,24 @@ public class DiscordClientHost : BackgroundService
     private readonly ILogger<DiscordClient> logger;
     private readonly DiscordClient client;
     private SystemSetupRunner? setupRunner;
-    private IServiceProvider provider;
 
-    public DiscordClientHost(ILogger<DiscordClient> logger, DiscordClient client, SystemSetupRunner setupRunner, IServiceProvider provider)
+    public DiscordClientHost(ILogger<DiscordClient> logger, DiscordClient client, SystemSetupRunner setupRunner)
     {
         this.logger = logger;
         this.client = client;
         this.setupRunner = setupRunner;
-        this.provider = provider;
+    }
+
+    public override Task StartAsync(CancellationToken cancellationToken)
+    {
+        Debug.Assert(setupRunner != null);
+        Task result = Task.WhenAll(setupRunner.Run(cancellationToken), base.StartAsync(cancellationToken));
+        setupRunner = null;
+        return result;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Debug.Assert(setupRunner != null);
-        await setupRunner.Run(stoppingToken);
-        setupRunner = null;
-
         // We can specify a status for our bot. Let's set it to "online" and set the activity to "with fire".
         DiscordActivity status = new("with fire", ActivityType.Playing);
 

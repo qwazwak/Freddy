@@ -1,24 +1,25 @@
-﻿using DSharpPlus.CommandsNext;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext.Attributes;
+﻿using System.Threading.Tasks;
 using FreddyBot.Core.Services;
+using DSharpPlus.SlashCommands;
+using DiscordExtensions;
 
 namespace FreddyBot.Core.Commands;
 
-public sealed class PasswordCommand : BaseCommandModule
+public sealed class PasswordCommand : ApplicationCommandModule
 {
     private readonly IPasswordGenerator generator;
 
     public PasswordCommand(IPasswordGenerator generator) => this.generator = generator;
 
-    // Register the method as a command, specifying the name and description.
-    // Unfortunately, CommandsNext does not support static methods.
-    [Command("password"), Description("Pings the bot and returns the gateway latency.")]
-    [Aliases("makepass", "genpassword")]
-    public async Task GeneratePasswordAsync(CommandContext ctx, int length = 8, bool includeNumbers = true, bool includeSpecialChars = true)
+    [SlashCommand("GeneratePassword", "Passwords the bot and returns the gateway latency.")]
+    public async Task PasswordAsync(InteractionContext ctx, [Option(nameof(length), "")] int length = 8, [Option(nameof(length), "")] bool includeNumbers = true, [Option(nameof(length), "")] bool includeSpecialChars = true)
     {
-        await ctx.Channel.TriggerTypingAsync();
-        string password = await generator.GeneratePassword(length, includeNumbers, includeSpecialChars);
-        await ctx.RespondAsync($"Heres a password you can use, be sure to keep it secret! `{password}`");
+        await ctx.DeferAsync(ephemeral: true);
+
+        Task TypingTask =  ctx.Channel.TriggerTypingAsync();
+        ValueTask<string> passwordTask = generator.GeneratePassword(length, includeNumbers, includeSpecialChars);
+        await TypingTask;
+        string password = await passwordTask;
+        await ctx.EditResponseAsync($"Heres a password you can use, be sure to keep it secret! `{password}`");
     }
 }

@@ -2,19 +2,25 @@
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext.Attributes;
 using System;
+using DSharpPlus.SlashCommands;
+using Microsoft.Extensions.Logging;
 
 namespace FreddyBot.Core.Commands;
 
-public sealed class RandomCommand : BaseCommandModule
+public sealed class RandomSlashCommand : ApplicationCommandModule
 {
-    // Because we inserted the Random as a singleton within the DI container
-    // CommandsNext will inject the instance into this property.
-    // This is NOT standard dependency injection, but a feature of CommandsNext.
-    // This works with all scopes, including transient.
-    public Random Random { get; set; } = new();
+    private readonly ILogger<RandomSlashCommand> logger;
+    private readonly Random random;
 
-    [Command("random"), Description("Returns a random number within the specified range. Defaults between 0 and 10.")]
-    public async Task RandomAsync(CommandContext context, int min = 0, int max = 10)
+    public RandomSlashCommand(ILogger<RandomSlashCommand> logger, Random random)
+    {
+        this.logger = logger;
+        this.random = random;
+    }
+
+    [SlashCommand("random", "Returns a random number within the specified range. Defaults between 0 and 10.")]
+
+    public async Task RandomAsync(CommandContext context, int min = 0, int max = 10, bool maxIsInclusive = true)
     {
         // Ensure that the minimum value is less than or equal to the maximum value.
         if (min > max)
@@ -23,8 +29,9 @@ public sealed class RandomCommand : BaseCommandModule
             await context.RespondAsync("The minimum value must be less than or equal to the maximum value.");
             return;
         }
-        max += 1;
+        if(maxIsInclusive)
+            max += 1;
         // Respond with the random number.
-        await context.RespondAsync($"Your random number is {Random.Next(min, max)}.");
+        await context.RespondAsync($"Your random number is {random.Next(min, max)}.");
     }
 }

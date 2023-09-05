@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext.Attributes;
 using Microsoft.Extensions.Logging;
+using DSharpPlus.SlashCommands;
 
 namespace FreddyBot.Core.Commands;
 
-// Inherit from BaseCommandModule so that CommandsNext can recognize this class as a command.
 public sealed class PingCommand : BaseCommandModule
 {
     private readonly ILogger<PingCommand> logger;
@@ -22,6 +22,23 @@ public sealed class PingCommand : BaseCommandModule
         ctx.RespondAsync($"Pong! The gateway latency is {ctx.Client.Ping}ms.");
 
     public override Task AfterExecutionAsync(CommandContext ctx)
+    {
+        logger.LogDebug("The gateway latency is {millisecondTime}ms.", ctx.Client.Ping);
+        return Task.CompletedTask;
+    }
+}
+
+public sealed class PingSlashCommand : ApplicationCommandModule
+{
+    private readonly ILogger<PingCommand> logger;
+
+    public PingSlashCommand(ILogger<PingCommand> logger) => this.logger = logger;
+
+    [SlashCommand("SlashPing", "Pings the bot and returns the gateway latency.")]
+    public Task PingAsync(InteractionContext ctx) =>
+        ctx.CreateResponseAsync($"Pong! The gateway latency is {ctx.Client.Ping}ms.");
+
+    public override Task AfterSlashExecutionAsync(InteractionContext ctx)
     {
         logger.LogDebug("The gateway latency is {millisecondTime}ms.", ctx.Client.Ping);
         return Task.CompletedTask;

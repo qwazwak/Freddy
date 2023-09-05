@@ -2,9 +2,11 @@
 using System.IO;
 using Microsoft.Extensions.Options;
 using System.Threading;
+using FreddyBot.Core.Services.Implementation.Database;
 
 namespace FreddyBot.Core.Services.Implementation;
 
+#if hardDefault
 public class RequiredFileSetup : ISystemSetup
 {
     private readonly FileProviderOptions options;
@@ -31,3 +33,13 @@ public class RequiredFileSetup : ISystemSetup
         await sourceStream.CopyToAsync(destinationStream);
     }
 }
+#else
+public class RequiredFileSetup : ISystemSetup
+{
+    private readonly SwearJarContext context;
+
+    public RequiredFileSetup(SwearJarContext context) => this.context = context;
+
+    public async Task Run(CancellationToken cancellationToken) => await context.Database.EnsureCreatedAsync(cancellationToken);
+}
+#endif

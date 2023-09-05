@@ -8,5 +8,5 @@ public interface ISwearJar
     Task SetSingleSwearValue(ulong guildID, decimal value);
     Task<decimal> GetSingleSwearValue(ulong guildID);
     Task<decimal> GetCurrentValue(ulong guildID);
-    Task AddSwear(ulong guildID);
+    Task IncrementJar(ulong guildID);
 }

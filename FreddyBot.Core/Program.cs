@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using DSharpPlus.EventsBinderExtension;
+using FreddyBot.Core.Services.Implementation.Database;
 
 namespace FreddyBot.Core;
 
@@ -47,7 +48,7 @@ public class Program
 
         services.AddTransient<ISystemSetup, RequiredFileSetup>();
 
-        services.AddTransient<IDiscordClientConfigurator, CommandsNextDiscordClientConfiguration>();
+        services.AddTransient<IDiscordClientConfigurator, ConfigureCommandsNext>();
         services.AddTransient<IDiscordClientConfigurator, ConfigureDiscordClientEvents>();
         services.AddTransient<DiscordConfiguration>((sp) =>
         {
@@ -55,7 +56,7 @@ public class Program
 
             return new()
             {
-                Token = options.DISCORD_TOKEN_FREDDY ?? throw new ArgumentException("Error! Discord token was not found!"),
+                Token = "ODgyOTc5MjkwNDExNTczMjc4.G-dcEL.APxwHnXKeIvGLINlWqKUcal-ec4vUQNFd3ybDg" ?? options.DiscordToken ?? throw new ArgumentException("Error! Discord token was not found!"),
 
                 // We're asking for unprivileged intents, which means we won't receive any member or presence updates.
                 // Privileged intents must be enabled in the Discord Developer Portal.
@@ -81,13 +82,11 @@ public class Program
 
         services.AddSingleton(Random.Shared); // We're using the shared instance of Random for simplicity.
         
-        services.AddDbContext<FreddyBotContext>(opt => opt.UseSqlite());
+        services.AddDbContext<SwearJarContext>(opt => opt.UseSqlite());
         services.AddTransient<ISwearJar, DbSwearJar>();
-        //services.AddSingleton<ISwearJar, FileSwearJar>();
 
-       // services.AddScoped<IProfanityDetector, ProfanityToolsDetector>();
+        services.AddScoped<IProfanityDetector, ProfanityToolsDetector>();
 
-        services.AddScoped<IProfanityDetector, ApiNinja>();
         services.AddScoped<ISentimentAnalyzer, ApiNinja>();
         services.AddScoped<IPasswordGenerator, ApiNinja>();
 

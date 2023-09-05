@@ -22,11 +22,14 @@ public sealed class SwearJarHandler : MessageCreatedEventHandler
 
     public override async Task OnMessageCreated(DiscordClient client, MessageCreateEventArgs args)
     {
+        if (args.Message.Author.IsBot)
+            return;
+
         string message = args.Message.Content;
         if (await profanityDetector.ContainsProfanity(message))
         {
             logger.LogInformation("User \"{author}\" said a bad word! The swear jar will be updated.", args.Author.Username);
-            await swearJar.AddSwear();
+            await swearJar.IncrementJar(args.Channel.Guild.Id);
         }
     }
 }

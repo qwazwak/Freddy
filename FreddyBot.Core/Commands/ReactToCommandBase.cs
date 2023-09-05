@@ -24,16 +24,15 @@ public abstract class ReactToCommandBase : BaseCommandModule
     protected async Task ReactTo(CommandContext context, ulong messageid)
     {
         DiscordMessage? relatedMessage = await context.Channel.GetMessageOrNullAsync(messageid);
-        if (relatedMessage != null)
-        {
-            await context.TriggerTypingAsync();
-            //await interaction.deferReply({ ephemeral: true});
-            foreach (DiscordEmoji emote in reactionEmoji)
-                await relatedMessage.CreateReactionAsync(emote);
-        }
-        else
+        if (Equals(relatedMessage, null))
         {
             await context.RespondAsync(NotFoundMessage(messageid));
+            return;
         }
+
+        await context.TriggerTypingAsync();
+        //await interaction.deferReply({ ephemeral: true});
+        foreach (DiscordEmoji emote in reactionEmoji)
+            await relatedMessage.CreateReactionAsync(emote);
     }
 }
