@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExtensions", "Discor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTesting.FreddyBot.Core", "UnitTesting.FreddyBot.Core\UnitTesting.FreddyBot.Core.csproj", "{DC562D96-3343-4A94-8D06-1F28787993C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreddyBot.DefaultDataPrep", "FreddyBot.DefaultDataPrep\FreddyBot.DefaultDataPrep.csproj", "{5729712E-6EAE-4D0B-B87F-30B85C20E72A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.BetterHosting", "DSharpPlus.BetterHosting\DSharpPlus.BetterHosting.csproj", "{015DBA41-2382-49BA-9E44-9DF3FC323522}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.BetterHosting.Files", "DSharpPlus.BetterHosting.Files\DSharpPlus.BetterHosting.Files.csproj", "{6F513C52-5D6A-468C-8A12-A2C54E2681B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.BetterHosting.CommandsNext", "DSharpPlus.BetterHosting.CommandsNext\DSharpPlus.BetterHosting.CommandsNext.csproj", "{13B8F73A-4811-4C84-B35D-D8F70094F6E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.BetterHosting.SampleProject", "DSharpPlus.BetterHosting.SampleProject\DSharpPlus.BetterHosting.SampleProject.csproj", "{022C7AF1-8C90-4B05-BB7F-636FCF4A6806}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLib.Nitro", "QLib.Nitro\QLib.Nitro.csproj", "{55BC01E1-5C37-4866-8D9D-B260405A5834}"
 EndProject
@@ -43,6 +49,22 @@ Global
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015DBA41-2382-49BA-9E44-9DF3FC323522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015DBA41-2382-49BA-9E44-9DF3FC323522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015DBA41-2382-49BA-9E44-9DF3FC323522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015DBA41-2382-49BA-9E44-9DF3FC323522}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F513C52-5D6A-468C-8A12-A2C54E2681B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F513C52-5D6A-468C-8A12-A2C54E2681B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F513C52-5D6A-468C-8A12-A2C54E2681B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F513C52-5D6A-468C-8A12-A2C54E2681B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B8F73A-4811-4C84-B35D-D8F70094F6E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B8F73A-4811-4C84-B35D-D8F70094F6E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B8F73A-4811-4C84-B35D-D8F70094F6E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B8F73A-4811-4C84-B35D-D8F70094F6E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{022C7AF1-8C90-4B05-BB7F-636FCF4A6806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{022C7AF1-8C90-4B05-BB7F-636FCF4A6806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{022C7AF1-8C90-4B05-BB7F-636FCF4A6806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{022C7AF1-8C90-4B05-BB7F-636FCF4A6806}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
