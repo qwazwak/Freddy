@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using DSharpPlus.EventsBinderExtension;
 using FreddyBot.Core.Services.Implementation.Database;
+using FreddyBot.Core.Services.Extensions;
 
 namespace FreddyBot.Core;
 
@@ -41,12 +42,11 @@ public class Program
         services.AddOptions();
         services.AddHttpClient();
 
-        services.AddOptions<FileProviderOptions>();
         services.AddOptions<DiscordClientOptions>();
 
         services.AddTransient<SystemSetupRunner>();
 
-        services.AddTransient<ISystemSetup, RequiredFileSetup>();
+        services.AddTransient<ISystemSetup, DBFileSetup>();
 
         services.AddTransient<IDiscordClientConfigurator, ConfigureCommandsNext>();
         services.AddTransient<IDiscordClientConfigurator, ConfigureDiscordClientEvents>();
@@ -81,17 +81,26 @@ public class Program
         });
 
         services.AddSingleton(Random.Shared); // We're using the shared instance of Random for simplicity.
-        
-        services.AddDbContext<SwearJarContext>(opt => opt.UseSqlite());
+
+        AddDbContext<SwearJarContext>(services, connectionStringName: null);
+        services.AddEventsNextHandlers(typeof(Program).Assembly);
+
+        static void AddDbContext<TContext>(IServiceCollection services, string? connectionStringName) where TContext : Microsoft.EntityFrameworkCore.DbContext
+        {
+            services.AddDbContext<TContext>((global::System.IServiceProvider provider, global::Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optBuilder) =>
+            {
+                global::FreddyBot.Core.Services.IConnectionStringsProvider connStringProvider = provider.GetRequiredService<global::FreddyBot.Core.Services.IConnectionStringsProvider>();
+                optBuilder.UseSqlite((string)connStringProvider.GetRequired(connectionStringName));
+            });
+        }
+
         services.AddTransient<ISwearJar, DbSwearJar>();
 
-        services.AddScoped<IProfanityDetector, ProfanityToolsDetector>();
+        services.AddScoped<IProfanityDetector, SimpleSwearDetector>();
 
         services.AddScoped<ISentimentAnalyzer, ApiNinja>();
         services.AddScoped<IPasswordGenerator, ApiNinja>();
 
         services.AddHostedService<DiscordClientHost>();
-
-        services.AddEventsNextHandlers(typeof(Program).Assembly);
     }
 }

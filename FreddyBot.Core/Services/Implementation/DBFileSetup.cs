@@ -1,14 +1,12 @@
 ﻿using System.Threading.Tasks;
-using System.IO;
-using Microsoft.Extensions.Options;
 using System.Threading;
 using FreddyBot.Core.Services.Implementation.Database;
 
 namespace FreddyBot.Core.Services.Implementation;
 
-#if hardDefault
-public class RequiredFileSetup : ISystemSetup
+public class DBFileSetup : ISystemSetup
 {
+#if hardDefault
     private readonly FileProviderOptions options;
 
     public RequiredFileSetup(IOptions<FileProviderOptions> options) : this(options.Value) { }
@@ -34,12 +32,19 @@ public class RequiredFileSetup : ISystemSetup
     }
 }
 #else
-public class RequiredFileSetup : ISystemSetup
-{
-    private readonly SwearJarContext context;
+    private readonly SwearJarContext jarsContext;
+    private readonly BadPasswordContext passwordContext;
 
-    public RequiredFileSetup(SwearJarContext context) => this.context = context;
+    public DBFileSetup(SwearJarContext jarsContext, BadPasswordContext passwordContext)
+    {
+        this.jarsContext = jarsContext;
+        this.passwordContext = passwordContext;
+    }
 
-    public async Task Run(CancellationToken cancellationToken) => await context.Database.EnsureCreatedAsync(cancellationToken);
-}
+    public async Task Run(CancellationToken cancellationToken)
+    {
+        await jarsContext.Database.EnsureCreatedAsync(cancellationToken);
+        await passwordContext.Database.EnsureCreatedAsync(cancellationToken);
+    }
 #endif
+}

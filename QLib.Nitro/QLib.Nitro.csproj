@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Nito.Collections.Deque" Version="1.1.1" />
+    <PackageReference Include="Nito.Disposables" Version="2.4.*" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
+  </ItemGroup>
+</Project>

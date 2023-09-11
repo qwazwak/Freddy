@@ -21,7 +21,6 @@ public class SwearJar : GuildKeyed, IDBTable
         public const string SwearCount = "SwearCount";
     }
 
-    //    [DefaultValue("0.25")]
     [Column(ColumnNames.ValueOfSingleSwear, TypeName = "REAL")]
     public decimal ValueOfSingleSwear { get; set; } = 0.25m;
 
