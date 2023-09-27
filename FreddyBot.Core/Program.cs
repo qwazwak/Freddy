@@ -18,13 +18,18 @@ namespace FreddyBot.Core;
 
 public class Program
 {
-    public static async Task Main(string[]? args)
+    public static async Task Main(string[]? args) => await Build(args).RunAsync();
+
+#if UseNewHosting
+    public static IDSharpHost Build(string[]? args) => GetBuilder(args).Build();
+
+    public static IDSharpHostBuilder GetBuilder(string[]? args)
     {
-        IHost host = Build(args);
-
-        await host.RunAsync();
+        IDSharpHostBuilder builder = DSharpHost.CreateDefaultBuilder(args);
+        builder.ConfigureServices(ConfigureServices);
+        return builder;
     }
-
+#else
     public static IHost Build(string[]? args) => GetBuilder(args).Build();
 
     public static HostApplicationBuilder GetBuilder(string[]? args)
@@ -34,6 +39,7 @@ public class Program
 
         return builder;
     }
+#endif
 
     private static void ConfigureServices(IServiceCollection services)
     {

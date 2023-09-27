@@ -1,10 +1,11 @@
-﻿using System;
+﻿#define WrapCore
+using System;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 using DSharpPlus.EventArgs;
 using System.Diagnostics;
 using DSharpPlus.AsyncEvents;
 using DSharpPlus.EventsBinderExtension.Entities;
+using System.Threading.Tasks;
 
 namespace DSharpPlus.EventsBinderExtension.Tools.Internal;
 

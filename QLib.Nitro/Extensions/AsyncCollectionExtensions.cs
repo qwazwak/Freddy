@@ -5,6 +5,7 @@ using Nito.AsyncEx;
 using System.Runtime.CompilerServices;
 
 namespace QLib.Extensions;
+
 public static class AsyncCollectionExtensions
 {
     /// <summary>

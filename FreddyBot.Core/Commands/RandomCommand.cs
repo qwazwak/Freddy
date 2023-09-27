@@ -1,22 +1,15 @@
 ﻿using DSharpPlus.CommandsNext;
 using System.Threading.Tasks;
-using DSharpPlus.CommandsNext.Attributes;
 using System;
 using DSharpPlus.SlashCommands;
-using Microsoft.Extensions.Logging;
 
 namespace FreddyBot.Core.Commands;
 
 public sealed class RandomSlashCommand : ApplicationCommandModule
 {
-    private readonly ILogger<RandomSlashCommand> logger;
     private readonly Random random;
 
-    public RandomSlashCommand(ILogger<RandomSlashCommand> logger, Random random)
-    {
-        this.logger = logger;
-        this.random = random;
-    }
+    public RandomSlashCommand(Random random) => this.random = random;
 
     [SlashCommand("random", "Returns a random number within the specified range. Defaults between 0 and 10.")]
 

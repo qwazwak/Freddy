@@ -13,9 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordExtensions", "Discor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTesting.FreddyBot.Core", "UnitTesting.FreddyBot.Core\UnitTesting.FreddyBot.Core.csproj", "{DC562D96-3343-4A94-8D06-1F28787993C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreddyBot.DefaultDataPrep", "FreddyBot.DefaultDataPrep\FreddyBot.DefaultDataPrep.csproj", "{5729712E-6EAE-4D0B-B87F-30B85C20E72A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLib.Nitro", "QLib.Nitro\QLib.Nitro.csproj", "{55BC01E1-5C37-4866-8D9D-B260405A5834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QLib.Nitro", "QLib.Nitro\QLib.Nitro.csproj", "{55BC01E1-5C37-4866-8D9D-B260405A5834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC562D96-3343-4A94-8D06-1F28787993C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5729712E-6EAE-4D0B-B87F-30B85C20E72A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{55BC01E1-5C37-4866-8D9D-B260405A5834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{55BC01E1-5C37-4866-8D9D-B260405A5834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55BC01E1-5C37-4866-8D9D-B260405A5834}.Release|Any CPU.ActiveCfg = Release|Any CPU
